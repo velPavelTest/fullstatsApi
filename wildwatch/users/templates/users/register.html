@@ -1,0 +1,16 @@
+{% extends "users/header.html" %}
+
+{% block content %}
+
+
+<!--Register-->
+<div>
+	<h1>Register</h1>
+	<form method="POST">
+		{% csrf_token %}
+		{{ register_form.as_p }}
+		<button type="submit">Регистрация</button>
+	</form>
+</div>
+
+{% endblock %}

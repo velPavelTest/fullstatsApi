@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+  </head>
+ <body>
+     {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% block content %}
+
+    {% endblock %}
+
+  </body>
+</html>

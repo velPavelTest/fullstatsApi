@@ -43,5 +43,41 @@ services:
       db:
         condition: service_healthy
 
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+
+  celery:
+    restart: always
+    build:
+      context: ./wildwatch
+    command: celery -A wildwatch worker -B -l info
+    volumes:
+      - ./wildwatch:/usr/src/app/
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+
+  flower:
+    restart: always
+    build:
+      context: ./wildwatch
+    command: celery -A wildwatch flower
+    volumes:
+      - ./wildwatch:/usr/src/app/
+    ports:
+      - 5555:5555
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+      - celery
+
 volumes:
   postgres_volume:
+  redis_data:

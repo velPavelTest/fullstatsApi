@@ -9,4 +9,5 @@ router.register(r'subscription', views.SubscriptionViewSet, basename='subscripti
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/report/<int:vendor_code>/', views.ProductReport.as_view(), name='product_report')
 ]

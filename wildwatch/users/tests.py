@@ -18,10 +18,12 @@ class RegisterTest(TestCase):
 
 
 class JwtTokenTest(APITestCase):
-    def setUp(self):
-        self.user_name = 'test_api_user'
-        self.password = 'hardPassword99'
-        CustomUser.objects.create_user(self.user_name, 'email@test.com', self.password)
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user_name = 'test_api_user'
+        cls.password = 'hardPassword99'
+        CustomUser.objects.create_user(cls.user_name, 'email@test.com', cls.password)
 
     def get_tokens(self):
         url = '/api/token/'
@@ -69,7 +71,7 @@ class JwtTokenTest(APITestCase):
         self.assertNotIn('access', response.data)
 
     def test_jwt_authorisation_valid(self):
-        url = '/api/testaccess/'
+        url = '/api/token/testaccess/'
         access = self.get_tokens()['access']
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer ' + access)
@@ -79,8 +81,14 @@ class JwtTokenTest(APITestCase):
         self.assertNotIn('access', response.data)
 
     def test_jwt_authorisation_invalid(self):
-        url = '/api/testaccess/'
+        url = '/api/token/testaccess/'
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer ' + 'abc')
+        response = client.get(url, data={'format': 'json'})
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_jwt_authorisation_without(self):
+        url = '/api/token/testaccess/'
+        client = APIClient()
         response = client.get(url, data={'format': 'json'})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

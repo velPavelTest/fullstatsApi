@@ -1,5 +1,5 @@
 from celery import shared_task
-from requests import HTTPError
+# from requests import HTTPError
 from .models import Subscription, ProductParseEntry
 from .services import get_wildberries_parsed_product
 from django.utils import timezone
@@ -13,7 +13,8 @@ def find_vendor_codes_to_parse():
         parce_product.apply_async((s['vendor_code'],), expires=timezone.now()+datetime.timedelta(minutes=59))
 
 
-# @shared_task(bind=True, autoretry_for=(HTTPError,), retry_kwargs={'max_retries': 2, 'countdown': 300}) - пока autoretry_for конфликтует с expires баг https://github.com/celery/celery/issues/7091
+# @shared_task(bind=True, autoretry_for=(HTTPError,), retry_kwargs={'max_retries': 2, 'countdown': 300})
+# пока autoretry_for конфликтует с expires баг https://github.com/celery/celery/issues/7091
 # @task поискать и воткнуть обходной вызов retry
 @shared_task(bind=True)
 def parce_product(self, vendor_id: int):

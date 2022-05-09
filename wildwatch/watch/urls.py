@@ -8,6 +8,8 @@ router.register(r'subscription', views.SubscriptionViewSet, basename='subscripti
 
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/report/<int:vendor_code>/', views.ProductReport.as_view(), name='product_report')
+    path('api/alternative/', include(router.urls)),
+    path('api/subscription/', views.SubscriptionsListAddViews.as_view(), name='subscriptions'),
+    path('api/subscription/<int:vendor_code>/', views.SubscriptionsDellViews.as_view(), name='delete_subscription'),
+    path('api/report/<int:vendor_code>/', views.ProductReport.as_view(), name='product_report'),
 ]

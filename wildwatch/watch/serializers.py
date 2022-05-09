@@ -8,6 +8,12 @@ class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'vendor_code']
 
 
+class SubscriptionWoIdSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ['vendor_code']
+
+
 class ProductParseEntrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductParseEntry

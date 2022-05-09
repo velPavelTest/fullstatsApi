@@ -5,10 +5,18 @@ from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
+from .models import CustomUser
+from .serializers import UserSerializer
 
 
 def homepage(request):
     return render(request=request, template_name="users/home.html")
+
+
+class UserCreate(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
 
 
 def register_request(request):
@@ -25,7 +33,7 @@ def register_request(request):
     return render(request=request, template_name="users/register.html", context={"register_form": form})
 
 
-class TestAcces(APIView):
+class TestAccess(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):

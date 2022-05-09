@@ -1,12 +1,13 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from users.models import CustomUser
 from django.utils import timezone
 
 
 class Subscription(models.Model):
-    '''Подписка пользователей на артикулы для парсинга.'''
+    """Подписка пользователей на артикулы для парсинга."""
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    vendor_code = models.IntegerField(verbose_name='Артикул')
+    vendor_code = models.IntegerField(verbose_name='Артикул', validators=[MinValueValidator(1), ])
     # При подключении других магазинов/маркетплейсов может понадобиться замена артикула на строку.
 
     class Meta:
